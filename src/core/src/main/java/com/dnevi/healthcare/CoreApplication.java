@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Import;
 @Import(IdentityApplication.class)
 public class CoreApplication {
     public static void main(String[] args) {
-        SpringApplication.run(IdentityApplication.class, args);
+        SpringApplication.run(CoreApplication.class, args);
     }
 }
