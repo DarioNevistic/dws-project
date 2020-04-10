@@ -1,6 +1,5 @@
 package com.dnevi.healthcare.application;
 
-import com.dnevi.healthcare.domain.repository.UserRepository;
 import com.dnevi.healthcare.domain.command.ConfirmInvitation;
 import com.dnevi.healthcare.domain.command.LoginRequest;
 import com.dnevi.healthcare.domain.command.RegistrationRequest;
@@ -18,6 +17,7 @@ import com.dnevi.healthcare.domain.model.user.employee.Doctor;
 import com.dnevi.healthcare.domain.model.user.patient.Patient;
 import com.dnevi.healthcare.domain.repository.EmployeeRepository;
 import com.dnevi.healthcare.domain.repository.PatientRepository;
+import com.dnevi.healthcare.domain.repository.UserRepository;
 import com.dnevi.healthcare.query.viewmodel.JwtAuthenticationResponse;
 import com.dnevi.healthcare.query.viewmodel.ViewModeUserResultSetBuilder;
 import com.dnevi.healthcare.query.viewmodel.ViewModelUser;

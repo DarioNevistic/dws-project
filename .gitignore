@@ -22,6 +22,12 @@ target/
 /log/
 /target/
 
+/src/identity/target
+/src/identity/identity.iml
+
+/src/core/target
+/src/core/identity.iml
+
 /mysql-5-data
 create.sql
 ./create.sql
