@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +56,11 @@ public class AuthController {
             @ApiParam(value = "The LoginRequest payload")
             @Valid @RequestBody LoginRequest loginRequest) {
         var jwtAuthenticationResponse = this.authService.authenticateUser(loginRequest);
+        var responseHeaders = new HttpHeaders();
+        responseHeaders
+                .add("Authorization", "Bearer " + jwtAuthenticationResponse.getAccessToken());
 
-        return new ResponseEntity<>(jwtAuthenticationResponse, HttpStatus.OK);
+        return new ResponseEntity<>(jwtAuthenticationResponse, responseHeaders, HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
