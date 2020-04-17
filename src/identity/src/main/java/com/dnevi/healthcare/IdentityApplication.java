@@ -1,5 +1,6 @@
 package com.dnevi.healthcare;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @PropertySource(value = {"classpath:application-identity.properties"})
 public class IdentityApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(IdentityApplication.class, args);
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

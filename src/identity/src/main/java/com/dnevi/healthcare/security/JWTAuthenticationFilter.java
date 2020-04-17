@@ -51,8 +51,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
+            if (jwt == null && StringUtils.hasText(request.getQueryString())) {
+                jwt = request.getQueryString().replace("token=", "");
+            }
 
-            if (org.springframework.util.StringUtils.hasText(jwt) && jwtTokenProvider
+            if (StringUtils.hasText(jwt) && jwtTokenProvider
                     .validateToken(jwt)) {
                 Long userId = jwtTokenProvider.getUserIdFromJWT(jwt);
 

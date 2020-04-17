@@ -6,7 +6,6 @@ import com.nsoft.chiwava.core.persistence.listener.PersistenceTimestampableListe
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +23,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@ToString
 @Getter
 @EntityListeners(PersistenceTimestampableListener.class)
 @Table(name = "patient")

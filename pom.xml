@@ -12,8 +12,8 @@
 
     <modules>
         <module>src/identity</module>
-        <module>src/core</module>
         <module>src/messenger</module>
+        <module>src/core</module>
     </modules>
 
 </project>

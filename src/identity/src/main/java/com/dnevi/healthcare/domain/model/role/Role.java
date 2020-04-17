@@ -6,7 +6,6 @@ import com.nsoft.chiwava.core.persistence.listener.PersistenceTimestampableListe
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
@@ -31,7 +30,6 @@ import java.util.Set;
 @Table(name = "role")
 @NoArgsConstructor
 @Getter
-@ToString
 @EntityListeners(PersistenceTimestampableListener.class)
 public class Role implements PersistenceTimestampable {
 
