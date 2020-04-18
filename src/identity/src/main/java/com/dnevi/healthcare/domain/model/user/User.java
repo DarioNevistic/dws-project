@@ -93,7 +93,6 @@ public class User implements PersistenceTimestampable, UserDetails {
 
     public void addRole(Role role) {
         roles.add(role);
-        role.getUserList().add(this);
     }
 
     public void addRoles(Set<Role> roles) {
@@ -102,7 +101,6 @@ public class User implements PersistenceTimestampable, UserDetails {
 
     public void removeRole(Role role) {
         roles.remove(role);
-        role.getUserList().remove(this);
     }
 
     public void markVerificationConfirmed() {

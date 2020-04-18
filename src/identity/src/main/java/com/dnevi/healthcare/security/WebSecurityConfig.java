@@ -40,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtEntryPoint = jwtEntryPoint;
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
@@ -64,7 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js").permitAll()
                 .anyRequest().authenticated();
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationTokenFilterBean(),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+    public JWTAuthenticationFilter authenticationTokenFilterBean() {
         return new JWTAuthenticationFilter();
     }
 
@@ -88,8 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
     @Bean
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }

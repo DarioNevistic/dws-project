@@ -1,12 +1,10 @@
 package com.dnevi.healthcare.domain.model.role;
 
-import com.dnevi.healthcare.domain.model.user.User;
 import com.nsoft.chiwava.core.persistence.PersistenceTimestampable;
 import com.nsoft.chiwava.core.persistence.listener.PersistenceTimestampableListener;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,12 +14,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The type Role. Defines the role and the list of users who are associated with that role
@@ -40,11 +35,7 @@ public class Role implements PersistenceTimestampable {
 
     @Column(name = "role_name", nullable = false, unique = true, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
-    @NaturalId
     private RoleName role;
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
 
     @Setter
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -80,13 +71,5 @@ public class Role implements PersistenceTimestampable {
 
     public void setRole(RoleName role) {
         this.role = role;
-    }
-
-    public Set<User> getUserList() {
-        return users;
-    }
-
-    public void setUserList(Set<User> userList) {
-        this.users = userList;
     }
 }
