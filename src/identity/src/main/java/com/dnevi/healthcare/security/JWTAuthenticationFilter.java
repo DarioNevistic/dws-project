@@ -47,7 +47,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
             if (jwt == null && StringUtils.hasText(request.getQueryString())) {
-                jwt = request.getQueryString().replace("token=", "");
+                jwt = org.apache.commons.lang3.StringUtils
+                        .substringBefore(request.getQueryString(), "&t=").replace("token=", "");
             }
 
             if (StringUtils.hasText(jwt) && jwtTokenProvider
