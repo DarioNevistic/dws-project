@@ -7,27 +7,25 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 public class WebSocketDisconnectHandler<S> implements ApplicationListener<SessionDisconnectEvent> {
-    private ActiveWebSocketUserRepository repository;
+    private ActiveWebSocketUserRepository activeWsUserRepository;
     private SimpMessageSendingOperations messagingTemplate;
 
     public WebSocketDisconnectHandler(SimpMessageSendingOperations messagingTemplate,
-            ActiveWebSocketUserRepository repository) {
+            ActiveWebSocketUserRepository activeWsUserRepository) {
         super();
         this.messagingTemplate = messagingTemplate;
-        this.repository = repository;
+        this.activeWsUserRepository = activeWsUserRepository;
     }
 
     @Override
     public void onApplicationEvent(SessionDisconnectEvent event) {
         String id = event.getSessionId();
-        if (id == null) {
-            return;
-        }
-//        this.repository.findById(id).ifPresent((user) -> {
-//            this.repository.deleteById(id);
+
+        this.activeWsUserRepository.findById(id).ifPresent((user) -> {
+            this.activeWsUserRepository.deleteById(id);
 //            this.messagingTemplate.convertAndSend("/topic/friends/signout",
 //                    Collections.singletonList(user.getUsername()));
-//        });
+        });
     }
 
 }

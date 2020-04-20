@@ -1,6 +1,7 @@
 package com.dnevi.healthcare.websocket;
 
 
+import com.dnevi.healthcare.domain.model.ActiveWebSocketUser;
 import com.dnevi.healthcare.domain.repository.ActiveWebSocketUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -14,15 +15,15 @@ import java.security.Principal;
 @Slf4j
 public class WebSocketConnectHandler implements ApplicationListener<SessionConnectEvent> {
 
-    private ActiveWebSocketUserRepository repository;
+    private ActiveWebSocketUserRepository activeWsUserRepository;
 
     private SimpMessageSendingOperations messagingTemplate;
 
     public WebSocketConnectHandler(SimpMessageSendingOperations messagingTemplate,
-            ActiveWebSocketUserRepository repository) {
+            ActiveWebSocketUserRepository activeWsUserRepository) {
         super();
         this.messagingTemplate = messagingTemplate;
-        this.repository = repository;
+        this.activeWsUserRepository = activeWsUserRepository;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class WebSocketConnectHandler implements ApplicationListener<SessionConne
         }
 
         String id = SimpMessageHeaderAccessor.getSessionId(headers);
-//        this.repository.save(new ActiveWebSocketUser(id, user.getName(), Calendar.getInstance()));
+        this.activeWsUserRepository.save(new ActiveWebSocketUser(id, user.getName()));
 //        this.messagingTemplate.convertAndSend("/topic/friends/signin", Collections.singletonList(user.getName()));
     }
 

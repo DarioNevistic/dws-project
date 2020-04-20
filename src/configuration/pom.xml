@@ -9,10 +9,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>configuration</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <name>core</name>
+    <name>configuration</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,6 +23,31 @@
 
     <dependencies>
         <dependency>
+            <!-- JPA Data (Repositories, Entities, Hibernate, etc..) -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nsoft.chiwava</groupId>
+            <artifactId>chiwava-core-persistence</artifactId>
+            <version>2.1.0.RC1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nsoft.chiwava</groupId>
+            <artifactId>chiwava-core-commons</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -31,16 +55,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.dnevi.healthcare.identity</groupId>
-            <artifactId>identity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
         </dependency>
+
         <dependency>
-            <groupId>com.dnevi.healthcare</groupId>
-            <artifactId>messenger</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem-spring-web-starter</artifactId>
+            <version>0.25.2</version>
         </dependency>
     </dependencies>
 

@@ -31,6 +31,7 @@ create table patient (
 create table employee (
     id bigint not null auto_increment,
     user_id bigint not null,
+    type varchar(10) not null,
     specialization varchar(100),
     created_at datetime(6) not null,
     updated_at datetime(6) not null,
@@ -73,5 +74,13 @@ create table invitation_token (
     version bigint not null,
     primary key (id)
 ) engine = InnoDB;
+
+create table active_ws_user (
+    session_id varchar(100) not null,
+    username varchar(50) not null,
+    connection_time datetime(6) not null,
+    primary key (session_id)
+) engine = InnoDB;
+
 
 
