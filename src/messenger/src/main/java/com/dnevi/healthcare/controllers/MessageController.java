@@ -1,37 +1,43 @@
 package com.dnevi.healthcare.controllers;
 
+import com.dnevi.healthcare.application.MessagingService;
 import com.dnevi.healthcare.domain.InstantMessage;
 import com.dnevi.healthcare.domain.model.user.User;
-import com.dnevi.healthcare.domain.repository.ActiveWebSocketUserRepository;
 import com.dnevi.healthcare.security.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
+
+import javax.validation.Valid;
 
 @Controller
 public class MessageController {
-
     private final SimpMessageSendingOperations messagingTemplate;
-    private final ActiveWebSocketUserRepository activeUserRepository;
+    private final MessagingService messagingService;
 
     @Autowired
     public MessageController(
             SimpMessageSendingOperations messagingTemplate,
-            ActiveWebSocketUserRepository activeUserRepository) {
+            MessagingService messagingService) {
         this.messagingTemplate = messagingTemplate;
-        this.activeUserRepository = activeUserRepository;
+        this.messagingService = messagingService;
     }
 
     @MessageMapping("/im")
-    public void im(InstantMessage im, @CurrentUser User currentUser) {
-        im.setFrom(currentUser.getEmail());
-        this.messagingTemplate.convertAndSendToUser(im.getTo(), "/queue/messages", im);
-        this.messagingTemplate.convertAndSendToUser(im.getFrom(), "/queue/messages", im);
+    public void instantMessage(@Valid InstantMessage message, @CurrentUser User currentUser) {
+        message.setFrom(currentUser.getEmail());
+
+        // if all checks in messaging service OK ->
+        this.messagingTemplate
+                .convertAndSendToUser(message.getTo(), "/queue/private/messages", message);
     }
 
-//    @SubscribeMapping("/users")
-//    public List<String> subscribeMessages() {
-////        return this.activeUserRepository.findAllActiveUsers();
-//    }
+    @MessageExceptionHandler
+    @SendToUser("/queue/errors")
+    public String handleException(Throwable exception) {
+        return exception.getMessage();
+    }
 }

@@ -42,23 +42,12 @@ import java.util.stream.Collectors;
 @Setter
 public class User implements PersistenceTimestampable, UserDetails {
 
-    @Setter
-    @Column(name = "created_at", nullable = false, updatable = false)
-    protected LocalDateTime createdAt;
-
-    @Setter
-    @Column(name = "updated_at", nullable = false)
-    protected LocalDateTime updatedAt;
-
-    @Version
-    @Column(nullable = false)
-    protected Long version;
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TODO add unique constraints
     @NaturalId
     @Column(name = "email", unique = true, columnDefinition = "VARCHAR(50)")
     @NotBlank(message = "User email cannot be null")
@@ -90,6 +79,18 @@ public class User implements PersistenceTimestampable, UserDetails {
 
     @Column(name = "email_verified", nullable = false)
     private Boolean isEmailVerified;
+
+    @Setter
+    @Column(name = "created_at", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Setter
+    @Column(name = "updated_at", nullable = false)
+    protected LocalDateTime updatedAt;
+
+    @Version
+    @Column(nullable = false)
+    protected Long version;
 
     public void addRole(Role role) {
         roles.add(role);

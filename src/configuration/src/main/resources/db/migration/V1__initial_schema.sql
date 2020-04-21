@@ -82,5 +82,29 @@ create table active_ws_user (
     primary key (session_id)
 ) engine = InnoDB;
 
+create table conversation (
+    id bigint not null auto_increment,
+    title varchar(100) not null,
+    creator varchar(50) not null,
+    created_at datetime(6) not null,
+    updated_at datetime(6) not null,
+    deleted_at datetime(6) not null,
+    deleted boolean not null,
+    version bigint not null,
+    primary key (id)
+) engine = InnoDB;
+
+create table message (
+    id bigint not null auto_increment,
+    sender_user_id bigint not null,
+    recipient_user_id bigint not null,
+    payload text not null,
+    message_type varchar(10) not null,
+    conversation_id bigint not null,
+    created_at datetime(6) not null,
+    version bigint not null,
+    primary key (id)
+) engine = InnoDB;
+
 
 
