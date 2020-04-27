@@ -23,9 +23,6 @@ public class WebSocketDisconnectHandler<S> implements ApplicationListener<Sessio
 
         this.activeWsUserRepository.findById(id).ifPresent((user) -> {
             this.activeWsUserRepository.deleteById(id);
-//            this.messagingTemplate.convertAndSend("/topic/friends/signout",
-//                    Collections.singletonList(user.getUsername()));
         });
     }
-
 }

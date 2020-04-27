@@ -24,9 +24,7 @@ public class MessageController {
     @MessageMapping("/im")
     public void instantMessage(@Valid SendInstantMessage message, @CurrentUser User currentUser) {
         message.setFrom(currentUser);
-
-        // if all checks in messaging service OK ->
-
+        this.messagingService.sendMessage(message);
     }
 
     @MessageExceptionHandler

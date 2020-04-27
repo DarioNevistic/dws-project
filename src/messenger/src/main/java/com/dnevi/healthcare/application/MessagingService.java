@@ -14,11 +14,13 @@ import com.dnevi.healthcare.domain.repository.ConversationRepository;
 import com.dnevi.healthcare.query.viewmodel.ViewModelConversation;
 import com.dnevi.healthcare.query.viewmodel.ViewModelConversationResultSetBuilder;
 import com.dnevi.healthcare.query.viewmodel.ViewModelMessageResultSetBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class MessagingService {
     private final SimpMessageSendingOperations messagingTemplate;
@@ -72,13 +74,13 @@ public class MessagingService {
     private void handleMessage(String recipientEmail, InstantMessage instantMessage) {
         var activeWsUser = this.activeWsUserRepository.findByUsername(recipientEmail);
         if (activeWsUser.isPresent()) {
-            // send message
             var viewModelMessage = ViewModelMessageResultSetBuilder.buildOne(instantMessage);
             this.messagingTemplate
                     .convertAndSendToUser(recipientEmail, "/queue/private/messages",
                             viewModelMessage);
         } else {
             // TODO send notification to user
+            log.info("User {} is offline, sending notification...", recipientEmail);
         }
     }
 }

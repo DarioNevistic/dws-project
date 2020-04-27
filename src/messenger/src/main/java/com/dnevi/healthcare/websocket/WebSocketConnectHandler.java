@@ -36,7 +36,5 @@ public class WebSocketConnectHandler implements ApplicationListener<SessionConne
 
         String id = SimpMessageHeaderAccessor.getSessionId(headers);
         this.activeWsUserRepository.save(new ActiveWebSocketUser(id, user.getName()));
-//        this.messagingTemplate.convertAndSend("/topic/friends/signin", Collections.singletonList(user.getName()));
     }
-
 }
