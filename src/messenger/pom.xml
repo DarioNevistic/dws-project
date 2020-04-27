@@ -81,6 +81,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.2.6.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.dnevi.healthcare.identity</groupId>
             <artifactId>identity</artifactId>
             <version>1.0-SNAPSHOT</version>

@@ -1,22 +1,84 @@
 package com.dnevi.healthcare.application;
 
+import com.dnevi.healthcare.domain.command.CreateConversation;
+import com.dnevi.healthcare.domain.command.SendInstantMessage;
+import com.dnevi.healthcare.domain.exception.CannotCreateConversationException;
+import com.dnevi.healthcare.domain.exception.ConversationNotFoundException;
+import com.dnevi.healthcare.domain.model.conversation.Conversation;
+import com.dnevi.healthcare.domain.model.conversation.InstantMessage;
+import com.dnevi.healthcare.domain.model.conversation.MessageType;
+import com.dnevi.healthcare.domain.model.conversation.Participant;
+import com.dnevi.healthcare.domain.model.user.UserType;
 import com.dnevi.healthcare.domain.repository.ActiveWebSocketUserRepository;
+import com.dnevi.healthcare.domain.repository.ConversationRepository;
+import com.dnevi.healthcare.query.viewmodel.ViewModelConversation;
+import com.dnevi.healthcare.query.viewmodel.ViewModelConversationResultSetBuilder;
+import com.dnevi.healthcare.query.viewmodel.ViewModelMessageResultSetBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MessagingService {
+    private final SimpMessageSendingOperations messagingTemplate;
     private final ActiveWebSocketUserRepository activeWsUserRepository;
+    private final ConversationRepository conversationRepository;
+    private final AuthService authService;
 
     @Autowired
     public MessagingService(
-            ActiveWebSocketUserRepository activeWsUserRepository) {
+            SimpMessageSendingOperations messagingTemplate,
+            ActiveWebSocketUserRepository activeWsUserRepository,
+            ConversationRepository conversationRepository,
+            AuthService authService) {
+        this.messagingTemplate = messagingTemplate;
         this.activeWsUserRepository = activeWsUserRepository;
+        this.conversationRepository = conversationRepository;
+        this.authService = authService;
     }
-    // add message entity *--1 user
 
-    // do checks in messaging service
-    // (can user send message to specific user?,
-    // init conversation only if type=DOCTOR
-    // is user online? either send a notification)
+    @Transactional
+    public ViewModelConversation upsertConversation(CreateConversation command) {
+        var creatorUser = this.authService.getUserByEmail(command.getCreator());
+        var participantUser = this.authService.getUserByEmail(command.getParticipant());
+
+        if (creatorUser.getUserType() == UserType.PATIENT) {
+            throw CannotCreateConversationException.notAuthorized(creatorUser.getUserType());
+        }
+
+        var conversation = new Conversation(command.getTitle(), creatorUser);
+        conversation.addParticipant(new Participant(creatorUser));
+        conversation.addParticipant(new Participant(participantUser));
+
+        return ViewModelConversationResultSetBuilder
+                .buildSingle(this.conversationRepository.save(conversation));
+    }
+
+    @Transactional
+    public void sendMessage(SendInstantMessage command) {
+        var conversation = this.conversationRepository
+                .findByIdAndEmail(command.getConversationId(), command.getFrom().getEmail())
+                .orElseThrow(() -> new ConversationNotFoundException(command.getConversationId()));
+
+        var message = new InstantMessage(command.getFrom(), command.getMessage(),
+                MessageType.TEXT);
+        conversation.addMessage(message);
+        this.conversationRepository.save(conversation);
+
+        this.handleMessage(command.getTo(), message);
+    }
+
+    private void handleMessage(String recipientEmail, InstantMessage instantMessage) {
+        var activeWsUser = this.activeWsUserRepository.findByUsername(recipientEmail);
+        if (activeWsUser.isPresent()) {
+            // send message
+            var viewModelMessage = ViewModelMessageResultSetBuilder.buildOne(instantMessage);
+            this.messagingTemplate
+                    .convertAndSendToUser(recipientEmail, "/queue/private/messages",
+                            viewModelMessage);
+        } else {
+            // TODO send notification to user
+        }
+    }
 }

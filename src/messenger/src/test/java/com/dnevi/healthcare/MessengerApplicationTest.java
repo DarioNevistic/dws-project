@@ -1,20 +1,11 @@
 package com.dnevi.healthcare;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import org.junit.Test;
-
-/**
- * Unit test for simple App.
- */
-public class MessengerApplicationTest
-{
-    /**
-     * Rigorous Test :-)
-     */
+@SpringBootTest
+public class MessengerApplicationTest {
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    void contextLoads() {
     }
 }
