@@ -5,6 +5,8 @@ import com.nsoft.chiwava.core.error.Title;
 public enum ExceptionTitles implements Title {
 
     INVALID_INVITATION_TOKEN("exception.invalid_invitation_token"),
+    CONVERSATION_NOT_FOUND("exception.conversation_not_found"),
+    CANNOT_CREATE_CONVERSATION("exception.cannot_create_conversation"),
     INVALID_JWT_TOKEN("exception.invalid_jwt_token"),
     USER_LOGIN_FAILED("exception.user_login_failed"),
     MISSING_INVITATION_TOKEN("exception.missing_invitation_token"),

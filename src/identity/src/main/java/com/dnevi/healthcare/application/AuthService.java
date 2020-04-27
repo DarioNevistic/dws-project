@@ -8,6 +8,7 @@ import com.dnevi.healthcare.domain.exception.InvalidUserTypeException;
 import com.dnevi.healthcare.domain.exception.MissingInvitationTokenException;
 import com.dnevi.healthcare.domain.exception.ResourceAlreadyInUseException;
 import com.dnevi.healthcare.domain.exception.UserLoginException;
+import com.dnevi.healthcare.domain.exception.UserNotFoundException;
 import com.dnevi.healthcare.domain.model.invitation.InvitationContextHint;
 import com.dnevi.healthcare.domain.model.invitation.InvitationStatus;
 import com.dnevi.healthcare.domain.model.role.Role;
@@ -35,6 +36,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -77,6 +80,7 @@ public class AuthService {
      *
      * @return A user object if successfully created
      */
+    @Transactional
     public ViewModelUser registerUser(RegistrationRequest command) {
         String newRegistrationRequestEmail = command.getEmail();
         if (this.emailAlreadyExists(newRegistrationRequestEmail)) {
@@ -200,10 +204,7 @@ public class AuthService {
         InvitationContextHint invitationContextHint = InvitationContextHint
                 .fromBase64(command.getHint());
 
-        var user = this.userRepository.findByEmail(invitationContextHint.getReceiver())
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        String.format("User with the email %s not found.",
-                                invitationContextHint.getReceiver())));
+        var user = this.getUserByEmail(invitationContextHint.getReceiver());
         if (command.getInvitationToken() == null) {
             throw new MissingInvitationTokenException();
         }
@@ -216,5 +217,19 @@ public class AuthService {
         user.markVerificationConfirmed();
 
         return ViewModeUserResultSetBuilder.buildSingle(user);
+    }
+
+    public User getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    public Optional<List<User>> findUsersByEmails(List<String> emails) {
+        var users = this.userRepository.fetchByEmails(emails);
+        if (users.isEmpty()) {
+            log.error("No users found for provided emails.");
+        }
+
+        return users;
     }
 }
