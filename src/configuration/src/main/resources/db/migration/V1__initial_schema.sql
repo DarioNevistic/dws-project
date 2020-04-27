@@ -85,19 +85,18 @@ create table active_ws_user (
 create table conversation (
     id bigint not null auto_increment,
     title varchar(100) not null,
-    creator varchar(50) not null,
+    creator_user_id bigint not null,
     created_at datetime(6) not null,
     updated_at datetime(6) not null,
-    deleted_at datetime(6) not null,
+    deleted_at datetime(6),
     deleted boolean not null,
     version bigint not null,
     primary key (id)
 ) engine = InnoDB;
 
-create table message (
+create table instant_message (
     id bigint not null auto_increment,
     sender_user_id bigint not null,
-    recipient_user_id bigint not null,
     payload text not null,
     message_type varchar(10) not null,
     conversation_id bigint not null,
@@ -106,5 +105,25 @@ create table message (
     primary key (id)
 ) engine = InnoDB;
 
+create table participant (
+    id bigint not null auto_increment,
+    user_id bigint not null,
+    conversation_id bigint not null,
+    created_at datetime(6) not null,
+    updated_at datetime(6) not null,
+    version bigint not null,
+    primary key (id)
+) engine = InnoDB;
 
+alter table `employee`
+ADD CONSTRAINT FK6lk0xml9r7okjdq0onka4ytju
+FOREIGN KEY (`user_id`)
+REFERENCES `user` (`id`)
+    ON delete CASCADE;
+
+alter table `patient`
+ADD CONSTRAINT FKp6ttmfrxo2ejiunew4ov805uc
+FOREIGN KEY (`user_id`)
+REFERENCES `user` (`id`)
+    ON delete CASCADE;
 
