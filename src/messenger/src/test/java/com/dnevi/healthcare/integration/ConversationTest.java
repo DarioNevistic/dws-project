@@ -5,16 +5,20 @@ import com.dnevi.healthcare.application.AuthService;
 import com.dnevi.healthcare.application.MessagingService;
 import com.dnevi.healthcare.domain.command.CreateConversation;
 import com.dnevi.healthcare.domain.command.RegistrationRequest;
+import com.dnevi.healthcare.domain.command.SendInstantMessage;
 import com.dnevi.healthcare.domain.model.user.UserType;
 import com.dnevi.healthcare.domain.repository.ConversationRepository;
 import com.dnevi.healthcare.domain.repository.UserRepository;
 import com.dnevi.healthcare.query.viewmodel.ViewModelConversation;
 import com.dnevi.healthcare.query.viewmodel.ViewModelUser;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,6 +37,12 @@ public class ConversationTest {
     @Autowired
     private ConversationRepository conversationRepository;
 
+    @After
+    public void tearDown() {
+        this.conversationRepository.deleteAll();
+        this.userRepository.deleteAll();
+    }
+
     @Test
     public void shouldCreateConversation() {
         var u1 = this.registerUser1();
@@ -41,8 +51,20 @@ public class ConversationTest {
         Assert.assertEquals(u1.getEmail(), conversation.getCreator());
         Assert.assertEquals("title", conversation.getTitle());
 
-//        this.conversationRepository.deleteById(conversation.getId());
-//        this.userRepository.deleteById(u1.getId());
+        var message = new SendInstantMessage();
+        message.setFrom(this.userRepository.findByEmail(u1.getEmail()).get());
+        message.setTo(u2.getEmail());
+        message.setConversationId(conversation.getId());
+        message.setMessage("Example message");
+
+        this.messagingService.sendMessage(message);
+        this.messagingService.sendMessage(message);
+        this.messagingService.sendMessage(message);
+
+        Pageable pageable = PageRequest.of(0, 10);
+        var result = this.messagingService
+                .fetchConversationMessages(conversation.getId(), pageable);
+        Assert.assertEquals(3, result.getData().size());
     }
 
     private ViewModelConversation createConversation(String creator, String participant) {

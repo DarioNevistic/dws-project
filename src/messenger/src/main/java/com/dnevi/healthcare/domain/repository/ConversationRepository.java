@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
     @Query("SELECT c FROM #{#entityName} c "
+            + "JOIN c.creator u "
             + "WHERE c.id = :id "
-            + "AND c.creator = :creator")
-    Optional<Conversation> findByIdAndEmail(@Param("id") Long id,
-            @Param("creator") String creator);
+            + "AND u.id = :user_id")
+    Optional<Conversation> findByIdAndUserId(@Param("id") Long id,
+            @Param("user_id") Long userId);
 }
