@@ -23,9 +23,15 @@ target/
 /target/
 
 /src/identity/target
+/src/identity/var
 /src/identity/identity.iml
 
+/src/messenger/target
+/src/messenger/var
+/src/messenger/identity.iml
+
 /src/core/target
+/src/core/var
 /src/core/identity.iml
 
 /mysql-5-data
