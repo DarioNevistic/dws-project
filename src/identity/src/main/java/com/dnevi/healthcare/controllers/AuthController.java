@@ -90,7 +90,7 @@ public class AuthController {
     @ApiOperation(value = "Confirm user invitation")
     @GetMapping(value = "/confirm-invitation")
     public ResponseEntity<ViewModelUser> confirmInvitation(
-            @RequestParam(value = "token") String invitationToken,
+            @RequestParam(value = "invitation_token") String invitationToken,
             @RequestParam(value = "context") String hint) {
         var command = new ConfirmInvitation();
         command.setInvitationToken(invitationToken);

@@ -46,7 +46,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            if (jwt == null && StringUtils.hasText(request.getQueryString())) {
+            if (jwt == null && StringUtils
+                    .hasText(request.getQueryString()) && !request.getQueryString()
+                    .contains("invitation_token")) {
                 jwt = org.apache.commons.lang3.StringUtils
                         .substringBefore(request.getQueryString(), "&t=").replace("token=", "");
             }
