@@ -31,9 +31,7 @@ REST API errors are expressed through Zalando problem implementation.
 
 
 #### Add the default roles
- Add roles using bootstrap sql script which is located at:
-
-`./src/configuration/src/main/resources/db/bootstrap.sql`
-
+ Add roles using bootstrap sql script which is located at 
+[Bootstrap SQL](https://github.com/DarioNevistic/dws-healthcare/blob/master/src/configuration/src/main/resources/db/bootstrap.sql)
 
 
