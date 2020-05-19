@@ -25,7 +25,7 @@ You can run database containers using docker-compose with the command:
   
   
 #### Exception handling
-The app throws custom exceptions each of which is extending `AbstractError` class from Chiwava error library.
+The app throws custom exceptions each of which is extending `AbstractError` class from [Chiwava](https://mvnrepository.com/artifact/com.nsoft.chiwava/chiwava-core-error) error library.
 
 REST API errors are expressed through Zalando problem implementation.
 
