@@ -1,0 +1,50 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/var/
+/mysql-data/
+/log/
+/target/
+
+/src/identity/target
+/src/identity/var
+/src/identity/identity.iml
+
+/src/messenger/target
+/src/messenger/var
+/src/messenger/identity.iml
+
+/src/core/target
+/src/core/var
+/src/core/identity.iml
+
+/mysql-5-data
+create.sql
+./create.sql
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
