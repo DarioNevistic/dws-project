@@ -1,4 +1,4 @@
-# DWS-Healthcare
+# HC Demo
 A demo project explaining basic backend authentication and messages exchanging system using Spring Security, Spring Websockets, Spring Data JPA and MySQL.
 
 Migration schema can be found at
