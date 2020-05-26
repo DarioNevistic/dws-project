@@ -2,7 +2,7 @@
 A demo project explaining basic backend authentication and messages exchanging system using Spring Security, Spring Websockets, Spring Data JPA and MySQL.
 
 Migration schema can be found at
-[DWS Migration Schema](https://github.com/DarioNevistic/dws-healthcare/blob/master/src/configuration/src/main/resources/db/migration/V1__initial_schema.sql)
+[Migration Schema](https://github.com/DarioNevistic/dws-healthcare/blob/master/src/configuration/src/main/resources/db/migration/V1__initial_schema.sql)
 
 
 #### Authentication using Spring Security
