@@ -19,7 +19,7 @@ Migration schema can be found at
  - Connecting to WS using STOMP protocol
 
 #### MySql + PhpMyAdmin
-You can run database containers using docker-compose with the command:
+Run containers using docker-compose with the command:
 
 `docker-compose up -d`
   
